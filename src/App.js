@@ -1,18 +1,11 @@
 import 'react-native-gesture-handler';
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {requestLocationWithPermission} from './location';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-function Home() {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
+import {Search} from './screens/Search';
+import {Results} from './screens/Results';
+import {PlaceDetail} from './screens/PlaceDetail';
 
 const Stack = createStackNavigator();
 
@@ -21,38 +14,19 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="Search"
+          component={Search}
           options={{headerShown: false}}
+        />
+        <Stack.Screen name="Results" component={Results} />
+        <Stack.Screen
+          name="PlaceDetail"
+          component={PlaceDetail}
+          options={({route}) => ({
+            title: route.params.placeName,
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-// export default function App() {
-//   const [coordinates, setCoordinates] = useState(null);
-
-//   useEffect(() => {
-//     requestLocationWithPermission()
-//       .then(c => setCoordinates(c.coords))
-//       .catch(error => console.log(error.message));
-//   }, []);
-
-//   if (coordinates) {
-//     return (
-//       <MapView
-//         provider={PROVIDER_GOOGLE}
-//         style={{flex: 1}}
-//         initialRegion={{
-//           latitude: coordinates.latitude,
-//           longitude: coordinates.longitude,
-//           latitudeDelta: 0.09,
-//           longitudeDelta: 0.03,
-//         }}
-//       />
-//     );
-//   } else {
-//     return <></>;
-//   }
-// }
